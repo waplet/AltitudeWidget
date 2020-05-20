@@ -7,6 +7,7 @@ class AltitudeWidgetView extends Ui.View {
 	hidden var mNotMetric = false;  // ie they are Sys.UNIT_METRIC by default
 	hidden var mConvert = 1.0;
 	hidden var mTitle = "Altitude";
+	var mState;
 
     function initialize() {
 		mNotMetric = Sys.getDeviceSettings().elevationUnits != Sys.UNIT_METRIC;
@@ -18,8 +19,6 @@ class AltitudeWidgetView extends Ui.View {
     // Load your resources here
     function onLayout(dc) {
 		View.setLayout(Rez.Layouts.MainLayout(dc));
-    	mTitle = "Altitude (" + (mNotMetric ? "ft" : "m") + ")";
-        View.findDrawableById("title").setText(mTitle);
         View.findDrawableById("value").setText("0000");
     }
     
@@ -32,10 +31,18 @@ class AltitudeWidgetView extends Ui.View {
    			alt = Math.round(alt * mConvert);
        		alt = (alt.toNumber()).toString();
 			View.findDrawableById("value").setText(alt);
+        	View.findDrawableById("title").setText(mTitle + " (" + (mNotMetric ? "ft" : "m") + ")");
    	    } else {
 			View.findDrawableById("title").setText(mTitle + "\nnot available");
 			View.findDrawableById("value").setText("0000");
         }
+        
+        if (mState.mSubTitle != null) {
+        	View.findDrawableById("subtitle").setText(mState.mSubTitle);
+        } else {
+        	View.findDrawableById("subtitle").setText("");
+        }
+        
 
         // Call the parent onUpdate function to redraw the layout
         View.onUpdate(dc);

@@ -2,9 +2,12 @@ using Toybox.Application as App;
 
 class AltitudeWidgetApp extends App.AppBase {
 	hidden var AltView;
+	hidden var Delegate;
+	hidden var state;
 
     function initialize() {
         AppBase.initialize();
+		state = new AltitudeViewState();
     }
 
     // onStart() is called on application start up
@@ -18,7 +21,10 @@ class AltitudeWidgetApp extends App.AppBase {
     // Return the initial view of your application here
     function getInitialView() {
         AltView = new AltitudeWidgetView();
-        return [ AltView, new AltitudeWidgetDelegate() ];
+        AltView.mState = state;
+        Delegate = new AltitudeWidgetDelegate();
+        Delegate.mState = state;
+        return [ AltView, Delegate ];
     }
 
 (:glance)
